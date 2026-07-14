@@ -1,0 +1,528 @@
+/* =========================================================
+   ডিজাইন টোকেন — উষ্ণ কাঠের রিমোট-কনসোল নিউমরফিজম
+   ========================================================= */
+:root {
+    --bg-deep: #1c1510;
+    --wood: #4a3524;
+    --wood-light: #5c4530;
+    --wood-dark: #382a1c;
+    --brass: #d9a55a;
+    --brass-glow: #f0c98a;
+    --cream: #f2e6d2;
+    --cream-dim: #c9b79c;
+    --shadow-light: rgba(255, 222, 176, 0.07);
+    --shadow-dark: rgba(0, 0, 0, 0.62);
+    --radius-lg: 32px;
+    --radius-md: 20px;
+    --radius-sm: 13px;
+    --ease: cubic-bezier(.2, .8, .2, 1);
+    --font-display: 'Fraunces', serif;
+    --font-body: 'Manrope', sans-serif;
+    --font-mono: 'Space Mono', monospace;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: radial-gradient(ellipse at 50% 0%, #2a2018 0%, var(--bg-deep) 70%);
+    font-family: var(--font-body);
+    color: var(--cream);
+    overflow-x: hidden;
+}
+
+/* =========================================================
+   ল্যান্ডিং / পাওয়ার-অন স্ক্রিন
+   ========================================================= */
+.landing-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(ellipse at 50% 40%, #332415 0%, var(--bg-deep) 75%);
+    transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+}
+.landing-screen.hide {
+    opacity: 0;
+    transform: scale(1.06);
+    pointer-events: none;
+}
+.landing-noise {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.035) 1px, transparent 0);
+    background-size: 3px 3px;
+    opacity: 0.5;
+    animation: grain 1.4s steps(4) infinite;
+}
+@keyframes grain {
+    0%, 100% { transform: translate(0,0); }
+    25% { transform: translate(-1px, 1px); }
+    50% { transform: translate(1px, -1px); }
+    75% { transform: translate(-1px, -1px); }
+}
+.landing-content {
+    position: relative;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    animation: floatIn 1s var(--ease) both;
+}
+@keyframes floatIn {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.landing-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--brass);
+    margin: 0 0 4px;
+}
+.landing-title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(2.2rem, 8vw, 3.4rem);
+    margin: 0;
+    color: var(--cream);
+    letter-spacing: -0.01em;
+}
+.landing-title span {
+    color: var(--brass);
+    font-style: italic;
+    font-weight: 400;
+}
+.landing-tagline {
+    color: var(--cream-dim);
+    font-size: 0.95rem;
+    margin: 0 0 30px;
+}
+
+/* পাওয়ার ডায়াল */
+.power-dial {
+    position: relative;
+    width: 132px;
+    height: 132px;
+    border-radius: 50%;
+    border: none;
+    background: var(--wood);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 12px 12px 24px var(--shadow-dark), -10px -10px 22px var(--shadow-light);
+    transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+    animation: pulseGlow 3.2s ease-in-out infinite;
+}
+.power-dial:hover {
+    transform: translateY(-3px);
+    box-shadow: 14px 14px 28px var(--shadow-dark), -12px -12px 26px var(--shadow-light), 0 0 30px rgba(217,165,90,0.25);
+}
+.power-dial:active,
+.power-dial.pressed {
+    transform: translateY(1px) scale(0.96);
+    box-shadow: inset 6px 6px 14px var(--shadow-dark), inset -6px -6px 14px var(--shadow-light);
+}
+@keyframes pulseGlow {
+    0%, 100% { box-shadow: 12px 12px 24px var(--shadow-dark), -10px -10px 22px var(--shadow-light), 0 0 0 rgba(217,165,90,0); }
+    50% { box-shadow: 12px 12px 24px var(--shadow-dark), -10px -10px 22px var(--shadow-light), 0 0 22px rgba(217,165,90,0.22); }
+}
+.power-ring {
+    position: absolute;
+    inset: -14px;
+    border-radius: 50%;
+    border: 1px dashed rgba(217,165,90,0.35);
+    animation: spinSlow 14s linear infinite;
+}
+@keyframes spinSlow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+.power-core {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--wood-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--brass);
+    box-shadow: inset 4px 4px 10px var(--shadow-dark), inset -4px -4px 10px var(--shadow-light);
+}
+.landing-hint {
+    margin-top: 18px;
+    font-size: 0.8rem;
+    color: var(--cream-dim);
+    letter-spacing: 0.05em;
+}
+
+/* CRT ফ্ল্যাশ ট্রানজিশন */
+.crt-flash {
+    position: fixed;
+    inset: 0;
+    background: #fff8ec;
+    z-index: 90;
+    opacity: 0;
+    transform: scaleY(0.002);
+    pointer-events: none;
+}
+.crt-flash.active {
+    animation: crtOn 0.7s var(--ease) forwards;
+}
+@keyframes crtOn {
+    0%   { opacity: 1; transform: scaleY(0.002); }
+    35%  { opacity: 1; transform: scaleY(0.02); }
+    55%  { opacity: 0.95; transform: scaleY(1); }
+    100% { opacity: 0; transform: scaleY(1); }
+}
+
+/* =========================================================
+   স্টেজ / প্লেয়ার ফ্রেম
+   ========================================================= */
+.stage {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transform: scale(0.97);
+    pointer-events: none;
+    transition: opacity 0.5s var(--ease) 0.15s, transform 0.5s var(--ease) 0.15s;
+}
+.stage.on {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+}
+
+.player-frame {
+    width: 90%;
+    max-width: 800px;
+    background: var(--wood);
+    border-radius: var(--radius-lg);
+    padding: 22px;
+    box-shadow: 16px 16px 34px var(--shadow-dark), -14px -14px 30px var(--shadow-light);
+}
+.player-frame:fullscreen {
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    width: 100%; height: 100%; max-width: none; border-radius: 0; box-shadow: none;
+    background: var(--bg-deep);
+    padding: 0;
+}
+.player-frame:fullscreen .video-wrapper {
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: unset;
+    border-radius: 0;
+}
+.player-frame:fullscreen .top-controls-bar { margin-top: 20px; }
+
+/* =========================================================
+   ভিডিও এলাকা
+   ========================================================= */
+.video-wrapper {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: #000;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    box-shadow: inset 0 0 0 2px rgba(217,165,90,0.18), inset 6px 6px 16px rgba(0,0,0,0.5);
+    transition: flex 0.4s ease;
+}
+.video-container { position: relative; width: 100%; height: 100%; flex: 1; transition: flex-basis 0.3s ease; }
+video { width: 100%; height: 100%; object-fit: contain; background: #000; transition: padding 0.4s var(--ease); box-sizing: border-box; }
+
+.video-container::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(rgba(0,0,0,0) 0, rgba(0,0,0,0) 2px, rgba(255,255,255,0.012) 3px, rgba(0,0,0,0) 4px);
+    pointer-events: none;
+    mix-blend-mode: overlay;
+}
+
+.overlay {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; gap: 14px;
+    align-items: center; justify-content: center;
+    color: var(--cream);
+    background: rgba(15, 10, 6, 0.72);
+    backdrop-filter: blur(2px);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    text-align: center;
+    padding: 0 16px;
+}
+.spinner {
+    width: 46px; height: 46px;
+    border-radius: 50%;
+    border: 4px solid rgba(217,165,90,0.2);
+    border-top-color: var(--brass);
+    animation: spin 0.9s linear infinite;
+}
+.overlay-text { color: var(--cream-dim); letter-spacing: 0.03em; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* সিগন্যাল বিচ্ছিন্ন হওয়ার অ্যানিমেশন */
+.satellite-anim {
+    position: relative;
+    width: 96px; height: 96px;
+}
+.satellite-anim.glitching { animation: dishShake 2.4s ease-in-out infinite; }
+@keyframes dishShake {
+    0%, 62%, 100% { transform: translate(0, 0); }
+    64% { transform: translate(-2px, 1px); }
+    66% { transform: translate(2px, -1px); }
+    68% { transform: translate(-1px, 0); }
+    70% { transform: translate(0, 0); }
+}
+.wave { transform-origin: 50px 45px; }
+@keyframes waveOut {
+    0%   { opacity: 0; transform: scale(0.7); }
+    25%  { opacity: 1; transform: scale(1); }
+    60%  { opacity: 0.35; transform: scale(1.05); }
+    100% { opacity: 0; transform: scale(1.15); }
+}
+.satellite-icon {
+    transform-origin: 74px 20px;
+    animation: floatBob 3s ease-in-out infinite;
+}
+@keyframes floatBob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+}
+.signal-line {
+    animation: dashMove 1s linear infinite;
+}
+@keyframes dashMove {
+    to { stroke-dashoffset: -18; }
+}
+.satellite-anim.glitching .signal-line {
+    animation: dashMove 1s linear infinite, signalDrop 2.4s ease-in-out infinite;
+}
+@keyframes signalDrop {
+    0%, 58%   { opacity: 1; }
+    64%, 72%  { opacity: 0.1; }
+    82%, 100% { opacity: 1; }
+}
+.disconnect-x { opacity: 0; transform-origin: 54.5px 39.5px; }
+.satellite-anim.glitching .disconnect-x {
+    animation: xFlash 2.4s ease-in-out infinite;
+}
+@keyframes xFlash {
+    0%, 58%  { opacity: 0; transform: scale(0.5); }
+    64%      { opacity: 1; transform: scale(1.15); }
+    72%      { opacity: 1; transform: scale(1); }
+    82%, 100%{ opacity: 0; transform: scale(0.9); }
+}
+.overlay-text.error-text { color: #e5988f; }
+
+.unmute-btn {
+    position: absolute;
+    bottom: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 6;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    background: rgba(28, 20, 13, 0.88);
+    color: var(--brass-glow);
+    box-shadow: 4px 4px 10px rgba(0,0,0,0.4);
+    animation: unmutePulse 1.8s ease-in-out infinite;
+}
+.unmute-btn.hidden { display: none; }
+@keyframes unmutePulse {
+    0%, 100% { box-shadow: 4px 4px 10px rgba(0,0,0,0.4), 0 0 0 rgba(240,201,138,0); }
+    50% { box-shadow: 4px 4px 10px rgba(0,0,0,0.4), 0 0 14px rgba(240,201,138,0.35); }
+}
+
+/* =========================================================
+   চ্যানেল লিস্ট প্যানেল (ডান পাশে, ইনসেট)
+   ========================================================= */
+.channel-list-panel {
+    width: 0;
+    flex-basis: 0;
+    height: 100%;
+    background: var(--wood-dark);
+    color: var(--cream);
+    overflow-y: auto;
+    transition: flex-basis 0.35s var(--ease), width 0.35s var(--ease);
+    flex-shrink: 0;
+    box-shadow: inset 6px 0 14px rgba(0,0,0,0.4);
+}
+.video-wrapper.list-open .video-container { flex-basis: 75%; }
+.video-wrapper.list-open .channel-list-panel { flex-basis: 25%; width: 25%; padding: 10px; }
+
+.channel-list-title {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--brass);
+    padding: 6px 8px 10px;
+    border-bottom: 1px solid rgba(217,165,90,0.2);
+    position: sticky; top: 0;
+    background: var(--wood-dark);
+}
+.channel-list-panel ul { list-style: none; margin: 0; padding: 0; }
+.channel-list-panel li {
+    padding: 7px 8px;
+    margin: 4px 2px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.88rem;
+    transition: background 0.2s var(--ease), transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
+    animation: liIn 0.35s var(--ease) both;
+    animation-delay: calc(var(--i, 0) * 18ms);
+}
+@keyframes liIn {
+    from { opacity: 0; transform: translateX(10px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+.channel-list-panel li:hover { background: rgba(217,165,90,0.08); transform: translateX(-2px); }
+.channel-list-panel li.active {
+    background: linear-gradient(135deg, var(--brass), #b9803f);
+    color: var(--wood-dark);
+    font-weight: 700;
+    box-shadow: inset 2px 2px 6px rgba(0,0,0,0.25);
+}
+.channel-list-panel .ch-serial { font-family: var(--font-mono); opacity: 0.7; min-width: 22px; font-size: 0.8rem; }
+.channel-list-panel .ch-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; }
+.channel-list-panel .ch-logo {
+    width: 32px; height: 32px; min-width: 32px;
+    object-fit: contain;
+    background: #000;
+    border-radius: 8px;
+    flex-shrink: 0;
+    box-shadow: inset 0 0 0 1px rgba(217,165,90,0.25);
+}
+
+/* =========================================================
+   সেটিংস প্যানেল (বাম পাশে, স্লাইড-ইন ওভারলে)
+   ========================================================= */
+.settings-panel {
+    position: absolute;
+    top: 0; left: 0;
+    height: 100%;
+    width: 230px;
+    max-width: 72%;
+    background: rgba(28, 20, 13, 0.94);
+    backdrop-filter: blur(6px);
+    color: var(--cream);
+    padding: 16px;
+    box-sizing: border-box;
+    transform: translateX(-105%);
+    transition: transform 0.35s var(--ease);
+    overflow-y: auto;
+    z-index: 5;
+    box-shadow: 8px 0 24px rgba(0,0,0,0.4);
+}
+.settings-panel.open { transform: translateX(0); }
+.settings-title {
+    font-family: var(--font-mono);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    color: var(--brass);
+    margin-bottom: 16px;
+    border-bottom: 1px solid rgba(217,165,90,0.2);
+    padding-bottom: 8px;
+}
+.settings-row { margin-bottom: 18px; display: flex; flex-direction: column; gap: 8px; font-size: 0.85rem; }
+.settings-row-column { gap: 10px; }
+.settings-row label { display: flex; align-items: center; gap: 6px; color: var(--cream-dim); }
+
+/* নিউমরফিক রেঞ্জ স্লাইডার */
+.settings-row input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 6px;
+    background: var(--wood-dark);
+    box-shadow: inset 2px 2px 5px rgba(0,0,0,0.5), inset -2px -2px 5px rgba(255,222,176,0.05);
+    outline: none;
+}
+.settings-row input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--brass);
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+    cursor: pointer;
+    transition: transform 0.15s var(--ease);
+}
+.settings-row input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
+
+.size-inputs { display: flex; gap: 8px; }
+.size-inputs input, .rotate-controls input {
+    background: var(--wood-dark);
+    color: var(--cream);
+    border: none;
+    border-radius: 10px;
+    padding: 7px 8px;
+    font-size: 0.85rem;
+    box-shadow: inset 3px 3px 7px rgba(0,0,0,0.5), inset -2px -2px 6px rgba(255,222,176,0.05);
+}
+.size-inputs input { width: 50%; box-sizing: border-box; }
+.size-inputs input:disabled { opacity: 0.4; }
+.rotate-controls { display: flex; align-items: center; gap: 8px; }
+.rotate-controls input { width: 70px; text-align: center; font-family: var(--font-mono); }
+
+/* =========================================================
+   কন্ট্রোল বার (উপরে ও নিচে) — নিউমরফিক বাটন
+   ========================================================= */
+.top-controls-bar, .controls-bar {
+    display: flex; align-items: center; justify-content: center; gap: 16px;
+    transition: opacity 0.4s var(--ease), margin 0.4s var(--ease), max-height 0.4s var(--ease);
+}
+.top-controls-bar { margin-bottom: 16px; }
+.controls-bar { margin-top: 16px; }
+.top-controls-bar.hidden, .controls-bar.hidden {
+    opacity: 0; pointer-events: none; margin: 0; max-height: 0; overflow: hidden;
+}
+.scan-status { font-family: var(--font-mono); font-size: 0.78rem; color: var(--brass); letter-spacing: 0.03em; }
+
+button {
+    border: none;
+    background: var(--wood);
+    color: var(--cream);
+    border-radius: 16px;
+    padding: 10px 18px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    box-shadow: 6px 6px 12px var(--shadow-dark), -5px -5px 11px var(--shadow-light);
+    transition: transform 0.18s var(--ease), box-shadow 0.18s var(--ease), color 0.18s var(--ease);
+}
+button:hover { transform: translateY(-2px); color: var(--brass); }
+button:active {
+    transform: translateY(0) scale(0.95);
+    box-shadow: inset 4px 4px 9px var(--shadow-dark), inset -4px -4px 9px var(--shadow-light);
+    color: var(--brass);
+}
+button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+#playPauseBtn { border-radius: 50%; width: 54px; height: 54px; padding: 0; font-size: 1.3rem; }
+#playPauseBtn.is-playing { animation: playGlow 2.4s ease-in-out infinite; }
+@keyframes playGlow {
+    0%, 100% { box-shadow: 6px 6px 12px var(--shadow-dark), -5px -5px 11px var(--shadow-light); }
+    50% { box-shadow: 6px 6px 12px var(--shadow-dark), -5px -5px 11px var(--shadow-light), 0 0 16px rgba(217,165,90,0.35); }
+}
+
+.rotate-controls button { padding: 6px 12px; font-size: 1rem; border-radius: 12px; }
+
+/* কমানো-চলার প্রেফারেন্স সম্মান */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+}

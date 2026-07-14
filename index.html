@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium IPTV Player</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ল্যান্ডিং / পাওয়ার-অন স্ক্রিন -->
+    <div class="landing-screen" id="landingScreen">
+        <div class="landing-noise"></div>
+        <div class="landing-content">
+            <p class="landing-eyebrow">হোম সিনেমা কনসোল</p>
+            <h1 class="landing-title">প্রিমিয়াম <span>আইপিটিভি</span></h1>
+            <p class="landing-tagline">শত শত চ্যানেল, এক ছোঁয়ায়</p>
+
+            <button class="power-dial" id="powerBtn" aria-label="চালু করুন">
+                <span class="power-ring"></span>
+                <span class="power-core">
+                    <svg viewBox="0 0 24 24" width="30" height="30">
+                        <path d="M12 2v9" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+                        <path d="M6.3 6.3a8 8 0 1 0 11.4 0" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+                    </svg>
+                </span>
+            </button>
+            <p class="landing-hint">চালু করতে চাপুন</p>
+        </div>
+    </div>
+
+    <div class="stage" id="stage">
+    <div class="crt-flash" id="crtFlash"></div>
+    <div class="player-frame" id="playerFrame">
+        <div class="top-controls-bar" id="topControls">
+            <button id="scanBtn">🔍 চ্যানেল স্ক্যান</button>
+            <span id="scanStatus" class="scan-status"></span>
+        </div>
+
+        <div class="video-wrapper" id="videoWrapper">
+            <div class="video-container" id="videoContainer">
+                <video id="videoPlayer" playsinline></video>
+                <div id="loadingOverlay" class="overlay">লোড হচ্ছে...</div>
+                <button id="unmuteBtn" class="unmute-btn hidden">🔊 শব্দ চালু করুন</button>
+            </div>
+            <div class="channel-list-panel" id="channelListPanel">
+                <div class="channel-list-title">চ্যানেল লিস্ট</div>
+                <ul id="channelListItems"></ul>
+            </div>
+            <div class="settings-panel" id="settingsPanel">
+                <div class="settings-title">সেটিংস</div>
+
+                <div class="settings-row">
+                    <label for="volumeRange">ভলিউম</label>
+                    <input type="range" id="volumeRange" min="0" max="100" value="100">
+                </div>
+
+                <div class="settings-row">
+                    <label for="brightnessRange">ব্রাইটনেস</label>
+                    <input type="range" id="brightnessRange" min="20" max="200" value="100">
+                </div>
+
+                <div class="settings-row settings-row-column">
+                    <label>
+                        <input type="checkbox" id="autoSizeCheck" checked>
+                        স্ক্রিন সাইজ অটো
+                    </label>
+                    <div class="size-inputs">
+                        <input type="number" id="widthInput" placeholder="প্রস্থ (px)" disabled>
+                        <input type="number" id="heightInput" placeholder="উচ্চতা (px)" disabled>
+                    </div>
+                </div>
+
+                <div class="settings-row settings-row-column">
+                    <label>জুম (Zoom %)</label>
+                    <div class="rotate-controls">
+                        <button id="zoomMinusBtn">➖</button>
+                        <input type="number" id="zoomInput" value="100" step="10">
+                        <button id="zoomPlusBtn">➕</button>
+                    </div>
+                </div>
+
+                <div class="settings-row settings-row-column">
+                    <label>ভিডিও বর্ডার (px)</label>
+                    <div class="rotate-controls">
+                        <button id="borderMinusBtn">➖</button>
+                        <input type="number" id="borderInput" value="0" step="2">
+                        <button id="borderPlusBtn">➕</button>
+                    </div>
+                </div>
+
+                <div class="settings-row settings-row-column">
+                    <label>স্ক্রিন রোটেট (ডিগ্রি)</label>
+                    <div class="rotate-controls">
+                        <button id="rotateMinusBtn">➖</button>
+                        <input type="number" id="rotateInput" value="0" step="1">
+                        <button id="rotatePlusBtn">➕</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="controls-bar" id="controls">
+            <button id="settingsBtn">⚙️</button>
+            <button id="fitModeBtn">⛶ Fit</button>
+            <button id="prevBtn">⏮</button>
+            <button id="playPauseBtn">⏸</button>
+            <button id="nextBtn">⏭</button>
+            <button id="channelListBtn">☰</button>
+        </div>
+    </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script src="script.js"></script>
+</body>
+</html>
